@@ -44,6 +44,7 @@ def rotateCamY(targetAngle):
 def walkForward(blocks):
     locData = getLocationData()
     
+    print(locData)
     currentAngle = locData[3]
     currentAngle /= 90
     currentAngle = int(currentAngle)
@@ -98,3 +99,5 @@ def mine():
         miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
     else:
         miningTimeDict[blockToMine[3]] = miningTime
+
+    print(miningTimeDict)
