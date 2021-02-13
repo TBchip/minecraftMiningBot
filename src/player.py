@@ -97,7 +97,7 @@ def walkForward(blocks):
     locDataUpToDate = False
     surroundings.blockDataUpToDate = False
 
-miningTimeDict = {}
+miningTimeDict = {"a": 10}
 def mine():
     blockToMine = surroundings.getBlockData()
     targetedBlock = surroundings.getBlockData()
