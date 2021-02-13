@@ -11,11 +11,15 @@ def main():
     while not surroundings.checkLava():
         player.walkForward(1)
 
-        player.rotateCamY(0)
-        player.mine()
+        if(surroundings.checkWallTop()):
+            player.mine()
 
-        player.rotateCamY(40)
-        player.mine()
+        if(surroundings.checkWallBottom()):
+            player.mine()
+    
+    # player.rotateCamX(-90)
+    # while not surroundings.checkLava():
+    #     player.walkForward(1)
 
 if __name__ == "__main__":
     main()
