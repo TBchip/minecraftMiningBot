@@ -11,7 +11,13 @@ pixelsPerDegreeY = 1100/166.40
 secondsPerBlock = 30/129.94
 
 
+locData = []
+locDataUpToDate = False
 def getLocationData():
+    global locData, locDataUpToDate
+    if(locDataUpToDate):
+        return locData
+
     pydirectinput.keyDown("f3")
     pydirectinput.keyDown("c")
     pydirectinput.keyUp("f3")
@@ -22,10 +28,16 @@ def getLocationData():
     dataList = dataList[6:]
 
     dataList = [float(x) for x in dataList]
+
+    locData = dataList
+    locDataUpToDate = True
+    
     return dataList
     
 
 def rotateCamX(targetAngle):
+    global locDataUpToDate
+
     currentAngle = getLocationData()[3]
     deltaAngle = targetAngle-currentAngle
 
@@ -33,7 +45,12 @@ def rotateCamX(targetAngle):
     pydirectinput.moveRel(mouseMovement, 0, relative=True)
     sleep(0.1) # wait for rotation in game
 
+    locDataUpToDate = False
+    surroundings.blockDataUpToDate = False
+
 def rotateCamY(targetAngle):
+    global locDataUpToDate
+
     currentAngle = getLocationData()[4]
     deltaAngle = targetAngle-currentAngle
 
@@ -41,10 +58,14 @@ def rotateCamY(targetAngle):
     pydirectinput.moveRel(0, mouseMovement, relative=True)
     sleep(0.1) # wait for rotation in game
 
+    locDataUpToDate = False
+    surroundings.blockDataUpToDate = False
+
 def walkForward(blocks):
+    global locDataUpToDate
+
     locData = getLocationData()
     
-    print(locData)
     currentAngle = locData[3]
     currentAngle /= 90
     currentAngle = int(currentAngle)
@@ -73,6 +94,9 @@ def walkForward(blocks):
     sleep(secondsPerBlock*blocks)
     pydirectinput.keyUp("w")
 
+    locDataUpToDate = False
+    surroundings.blockDataUpToDate = False
+
 miningTimeDict = {}
 def mine():
     blockToMine = surroundings.getBlockData()
@@ -88,6 +112,7 @@ def mine():
         pydirectinput.mouseDown(button="left")
         sleep(miningTime/1000)
         pydirectinput.mouseUp(button="left")
+        surroundings.blockDataUpToDate = False
 
         miningTime += 50
 

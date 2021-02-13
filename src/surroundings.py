@@ -5,7 +5,15 @@ import pydirectinput
 import player
 
 
+blockData = []
+blockDataUpToDate = False
 def getBlockData():
+    global blockData, blockDataUpToDate
+    if(blockDataUpToDate):
+        return blockData
+
+    blockDataUpToDate = True
+
     pyperclip.copy("None")
 
     pydirectinput.keyDown("f3")
@@ -15,6 +23,7 @@ def getBlockData():
 
     dataString = pyperclip.paste()
     if(dataString == "None"):
+        blockData = None
         return None
     else:
         dataList = dataString.split(" ")
@@ -27,6 +36,7 @@ def getBlockData():
 
         dataList.append(blockType)
 
+        blockData = dataList
         return dataList
 
 
@@ -36,12 +46,12 @@ def checkLava():
 
     #point at block in front of feet
     player.rotateCamY(65)
+
     blockData = getBlockData()
     if(blockData == None):
         return True
 
     dist = abs(locData[0]-blockData[0])+abs(locData[1]-blockData[1])+abs(locData[2]-blockData[2])
-    print(dist)
     return dist == 3
 
 def checkWallTop():
@@ -49,6 +59,7 @@ def checkWallTop():
     playerY = math.floor(locData[1])
 
     player.rotateCamY(35)
+
     blockData = getBlockData()
     if(blockData == None):
         return False
@@ -60,6 +71,7 @@ def checkWallBottom():
     playerY = math.floor(locData[1])
 
     player.rotateCamY(65)
+
     blockData = getBlockData()
     if(blockData == None):
         return False
