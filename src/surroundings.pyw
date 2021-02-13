@@ -1,6 +1,5 @@
 import pyperclip
 import math
-import time
 import pydirectinput
 
 import player
@@ -22,9 +21,6 @@ def getBlockData():
     dataList = [float(x) for x in dataList]
 
     dataList.append(blockType)
-
-    timeStamp = int(time.time()*1000)
-    dataList.append(timeStamp)
 
     return dataList
     
