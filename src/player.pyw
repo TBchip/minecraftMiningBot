@@ -72,5 +72,35 @@ def walkForward(blocks):
     sleep(secondsPerBlock*blocks)
     pydirectinput.keyUp("w")
 
+miningTimeDict = {}
 def mine():
-    blockToMine = surr
+    blockToMine = surroundings.getBlockData()
+    targetedBlock = surroundings.getBlockData()
+
+    #check for existing mining time
+    miningTime = 0
+    if blockToMine[3] in miningTimeDict:
+        miningTime = miningTimeDict[blockToMine[3]]
+
+    #mine block
+    #sometimes, after breaking a block, the player is pointing at void and targetedblock will not be updated.
+    #this will compare the timestamp on the targetedblock data to ensure it is newly taken data.
+    previousTargetedBlockTimestamp = 0 
+    while blockToMine[:4] == targetedBlock[:4] and previousTargetedBlockTimestamp != targetedBlock[4]:
+        pydirectinput.mouseDown(button="left")
+        sleep(miningTime/1000)
+        pydirectinput.mouseUp(button="left")
+
+        miningTime += 50
+
+        previousTargetedBlockTimestamp = targetedBlock[4]
+        targetedBlock = surroundings.getBlockData()
+    miningTime -= 50 #negate last increase
+
+    #update miningTimeDict
+    if blockToMine[3] in miningTimeDict:
+        miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
+    else:
+        miningTimeDict[blockToMine[3]] = miningTime
+    
+    print(miningTimeDict)

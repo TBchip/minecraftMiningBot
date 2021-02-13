@@ -1,6 +1,6 @@
 import pyperclip
 import math
-
+import time
 import pydirectinput
 
 import player
@@ -17,8 +17,14 @@ def getBlockData():
     dataList = dataList[1:]
 
     blockType = dataList.pop(-1)
+    blockType = blockType.split("[")[0]
+
     dataList = [float(x) for x in dataList]
+
     dataList.append(blockType)
+
+    timeStamp = int(time.time()*1000)
+    dataList.append(timeStamp)
 
     return dataList
     
@@ -33,4 +39,4 @@ def checkLava():
     blockData = getBlockData()
     blockY = blockData[1]
 
-    return blockY+1 != playerY
+    return blockY+2 == playerY
