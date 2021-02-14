@@ -30,8 +30,12 @@ def executeCommand():
         stopBot = True
     elif command == "o":
         returnVal = commandFunctions.loadMiningConfig()
-    elif command == "p":
+    elif command == "i":
         returnVal = commandFunctions.saveMiningConfig()
+    elif command == "p":
+        returnVal = commandFunctions.printMiningConfig()
+    elif command == "s":
+        returnVal = commandFunctions.startBotLoop()
     else:
         returnVal = "error: invalid command"
 
@@ -42,7 +46,9 @@ def printCommands():
 
     print("c: close the bot")
     print("o: open a mining config")
-    print("p: save a mining config")
+    print("i: save a mining config")
+    print("p: display current miningconfig data")
+    print("s: start the bot")
 
     print("-" * 25)
 

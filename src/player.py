@@ -10,6 +10,7 @@ pixelsPerDegreeX = 2000/302.60
 pixelsPerDegreeY = 1100/166.40
 secondsPerBlock = 30/129.94
 
+currentAngle = 0
 
 locData = []
 locDataUpToDate = False

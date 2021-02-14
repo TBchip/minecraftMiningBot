@@ -1,20 +1,32 @@
 from time import sleep
-import pynput.keyboard as keyboard
+from pynput import keyboard
 
 import player
 import surroundings
 
+stopBotLoop = False
+
 def startBotLoop():
-    key
+    listener = keyboard.Listener(on_release=keyboardListenerOnRelease)
+    listener.start()
+
+    stopBotLoop = False
+    botLoop()
+
 
 def keyboardListenerOnRelease(key):
-    print(key)
+    global stopBotLoop
+
+    if hasattr(key, "char"):
+        if key.char == "r":
+            stopBotLoop = True
+            return False
 
 def botLoop():
     sleep(1)
 
     player.rotateCamX(-90)
-    while not surroundings.checkLava():
+    while not surroundings.checkLava() and not stopBotLoop:
         player.walkForward(1)
 
         if(surroundings.checkWallTop()):
