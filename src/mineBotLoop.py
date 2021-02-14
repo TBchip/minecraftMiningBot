@@ -16,7 +16,7 @@ def startBotLoop():
     listener = keyboard.Listener(on_release=keyboardListenerOnRelease)
     listener.start()
 
-    infoDelay(2)
+    infoDelay(5)
 
     botLoop()
 
