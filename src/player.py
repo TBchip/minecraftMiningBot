@@ -81,7 +81,7 @@ def walkForward(blocks):
         xPosDecimals = xPos % 1
         blocks -= (0.3-xPosDecimals)
         locationData[0] -= blocks
-    elif(currentAngle == 2): #neg z
+    elif(currentAngle == 2 or currentAngle == -2): #neg z
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         blocks -= (0.3-zPosDecimals)
