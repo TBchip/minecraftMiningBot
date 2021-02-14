@@ -5,6 +5,7 @@ import threading
 
 import player
 import surroundings
+import mineSequences
 
 
 stopBotLoop = False
@@ -56,13 +57,8 @@ def botLoop():
     while player.locationData == []:
         sleep(0.1)
 
-    player.rotateCamX(90)
-    while not surroundings.checkLava() and not stopBotLoop:
-        player.walkForward(1)
-
-        wallLevel = surroundings.checkWall()
-        while wallLevel > 0:
-            player.mine()
-            wallLevel = surroundings.checkWall()
+    player.rotateCamX(-90)
+    print(mineSequences.digTunnel(5))
+    input()
 
     stopBotLoop = True
