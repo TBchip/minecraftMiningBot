@@ -10,19 +10,13 @@ pixelsPerDegreeX = 2000/302.60
 pixelsPerDegreeY = 1100/166.40
 secondsPerBlock = 30/129.94
 
-currentAngle = 0
-
-locData = []
-locDataUpToDate = False
-def getLocationData():
-    global locData, locDataUpToDate
-    if(locDataUpToDate):
-        return locData
+locationData = []
+def updateLocationData():
+    global locationData
 
     pydirectinput.keyDown("f3")
-    pydirectinput.keyDown("c")
+    pydirectinput.press("c")
     pydirectinput.keyUp("f3")
-    pydirectinput.keyUp("c")
 
     dataString = pyperclip.paste()
     dataList = dataString.split(" ")
@@ -30,10 +24,33 @@ def getLocationData():
 
     dataList = [float(x) for x in dataList]
 
-    locData = dataList
+    locationData = dataList
     locDataUpToDate = True
+def getLocationData():
+    return locationData
 
-    return dataList
+# locData = []
+locDataUpToDate = False
+# def getLocationData():
+#     global locData, locDataUpToDate
+#     if(locDataUpToDate):
+#         return locData
+
+#     pydirectinput.keyDown("f3")
+#     pydirectinput.keyDown("c")
+#     pydirectinput.keyUp("f3")
+#     pydirectinput.keyUp("c")
+
+#     dataString = pyperclip.paste()
+#     dataList = dataString.split(" ")
+#     dataList = dataList[6:]
+
+#     dataList = [float(x) for x in dataList]
+
+#     locData = dataList
+#     locDataUpToDate = True
+
+#     return dataList
 
 
 def rotateCamX(targetAngle):
