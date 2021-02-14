@@ -31,9 +31,9 @@ def getLocationData():
 
     locData = dataList
     locDataUpToDate = True
-    
+
     return dataList
-    
+
 
 def rotateCamX(targetAngle):
     global locDataUpToDate
@@ -97,7 +97,7 @@ def walkForward(blocks):
     locDataUpToDate = False
     surroundings.blockDataUpToDate = False
 
-miningTimeDict = {"a": 10}
+miningTimeDict = {}
 def mine():
     blockToMine = surroundings.getBlockData()
     targetedBlock = surroundings.getBlockData()

@@ -1,60 +1,55 @@
-from time import sleep
-import math
-from pynput import keyboard
-import pickle
-from pathlib import Path
+from os import system
 
-import player
-import surroundings
+import commandFunctions
 
 stopBot = False
 def main():
-    global stopBot
-
-    listener = keyboard.Listener(
-        on_press=None,
-        on_release=on_release)
-    listener.start()
+    clearScreen()
 
     while not stopBot:
-        sleep(0.1)
+        returnVal = executeCommand()
+        clearScreen()
+        print(returnVal, "\n")
 
-    # pickle.dump(player.miningTimeDict, open("./folder/config.txt", "wb"))
-    # d = pickle.load(open("config.txt", "rb"))
+    system("cls")
 
-def botLoop():
-    sleep(1)
-
-    player.rotateCamX(-90)
-    while not surroundings.checkLava() and not stopBot:
-        player.walkForward(1)
-
-        if(surroundings.checkWallTop()):
-            player.mine()
-        
-        if(surroundings.checkWallBottom()):
-            player.mine()
-
-def saveMiningConfig():
-    Path("./miningConfigs/").mkdir(parents=True, exist_ok=True)
-    pickle.dump(player.miningTimeDict, open("./miningConfigs/config.txt", "wb"))
-def loadMiningConfig():
-    if Path("./miminingConfigs/config.txt").exists():
-        player.miningTimeDict = pickle.load(open("config.txt", "rb"))
-
-def on_release(key):
+def executeCommand():
     global stopBot
 
-    print(key)
+    printCommands()
 
-    if key == keyboard.Key.esc:
+    command = input("command: ")
+
+    command = command.replace(" ", "")
+    command = command.lower()
+
+    clearScreen()
+
+    returnVal = None
+    if command == "c":
         stopBot = True
-        return False
-    elif key.char:
-        if key.char == "p":
-            saveMiningConfig()
-        elif key.char == "o":
-            loadMiningConfig()
+    elif command == "o":
+        returnVal = commandFunctions.loadMiningConfig()
+    elif command == "p":
+        returnVal = commandFunctions.saveMiningConfig()
+    else:
+        returnVal = "error: invalid command"
+
+    return returnVal
+    
+def printCommands():
+    print("-" * 25)
+
+    print("c: close the bot")
+    print("o: open a mining config")
+    print("p: save a mining config")
+
+    print("-" * 25)
+
+
+def clearScreen():
+    system("cls")
+    print()
 
 
 if __name__ == "__main__":
