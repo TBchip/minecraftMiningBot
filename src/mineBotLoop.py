@@ -1,17 +1,38 @@
 from time import sleep
+from os import system
 from pynput import keyboard
+import threading
 
 import player
 import surroundings
 
+
 stopBotLoop = False
 
 def startBotLoop():
+    global stopBotLoop
+    stopBotLoop = False
+
     listener = keyboard.Listener(on_release=keyboardListenerOnRelease)
     listener.start()
 
-    stopBotLoop = False
+    infoDelay(2)
+
     botLoop()
+
+def infoDelay(openMinecraftDelay):
+    for i in range(openMinecraftDelay*10):
+        if stopBotLoop:
+            return
+
+        system("cls")
+        print()
+        print("press R to stop the bot loop")
+        print(f"bot starting in {round((openMinecraftDelay-(i/10)), 1)} seconds, please open minecraft")
+        sleep(0.1)
+
+    print("press R to stop the bot loop")
+    system("cls")
 
 
 def keyboardListenerOnRelease(key):
@@ -22,15 +43,26 @@ def keyboardListenerOnRelease(key):
             stopBotLoop = True
             return False
 
-def botLoop():
-    sleep(1)
+    if stopBotLoop:
+        return False
 
-    player.rotateCamX(-90)
+def botLoop():
+    global stopBotLoop
+    
+    #get initial location data
+    player.updateLocationData()
+
+    # wait until locationData gets initialized
+    while player.locationData == []:
+        sleep(0.1)
+
+    player.rotateCamX(90)
     while not surroundings.checkLava() and not stopBotLoop:
         player.walkForward(1)
 
-        if(surroundings.checkWallTop()):
+        wallLevel = surroundings.checkWall()
+        while wallLevel > 0:
             player.mine()
+            wallLevel = surroundings.checkWall()
 
-        if(surroundings.checkWallBottom()):
-            player.mine()
+    stopBotLoop = True

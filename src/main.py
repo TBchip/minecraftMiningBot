@@ -9,7 +9,10 @@ def main():
     while not stopBot:
         returnVal = executeCommand()
         clearScreen()
-        print(returnVal, "\n")
+        if(returnVal == None):
+            print("the command did not return any data", "\n")
+        else:
+            print(returnVal, "\n")
 
     system("cls")
 

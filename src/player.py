@@ -8,111 +8,97 @@ import surroundings
 
 pixelsPerDegreeX = 2000/302.60
 pixelsPerDegreeY = 1100/166.40
-secondsPerBlock = 30/129.94
+secondsPerBlock = 0.67
+
 
 locationData = []
 def updateLocationData():
     global locationData
 
     pydirectinput.keyDown("f3")
-    pydirectinput.press("c")
+    pydirectinput.keyDown("c")
     pydirectinput.keyUp("f3")
+    pydirectinput.keyUp("c")
 
     dataString = pyperclip.paste()
+
     dataList = dataString.split(" ")
     dataList = dataList[6:]
 
     dataList = [float(x) for x in dataList]
 
     locationData = dataList
-    locDataUpToDate = True
-def getLocationData():
-    return locationData
-
-# locData = []
-locDataUpToDate = False
-# def getLocationData():
-#     global locData, locDataUpToDate
-#     if(locDataUpToDate):
-#         return locData
-
-#     pydirectinput.keyDown("f3")
-#     pydirectinput.keyDown("c")
-#     pydirectinput.keyUp("f3")
-#     pydirectinput.keyUp("c")
-
-#     dataString = pyperclip.paste()
-#     dataList = dataString.split(" ")
-#     dataList = dataList[6:]
-
-#     dataList = [float(x) for x in dataList]
-
-#     locData = dataList
-#     locDataUpToDate = True
-
-#     return dataList
 
 
 def rotateCamX(targetAngle):
-    global locDataUpToDate
+    global locationData
 
-    currentAngle = getLocationData()[3]
+    currentAngle = locationData[3]
     deltaAngle = targetAngle-currentAngle
 
     mouseMovement = int(pixelsPerDegreeX*deltaAngle)
     pydirectinput.moveRel(mouseMovement, 0, relative=True)
-    sleep(0.1) # wait for rotation in game
 
-    locDataUpToDate = False
     surroundings.blockDataUpToDate = False
+    
+    locationData[3] = targetAngle
 
 def rotateCamY(targetAngle):
-    global locDataUpToDate
+    global locationData
 
-    currentAngle = getLocationData()[4]
+    currentAngle = locationData[4]
     deltaAngle = targetAngle-currentAngle
 
     mouseMovement = int(pixelsPerDegreeY*deltaAngle)
     pydirectinput.moveRel(0, mouseMovement, relative=True)
-    sleep(0.1) # wait for rotation in game
 
-    locDataUpToDate = False
     surroundings.blockDataUpToDate = False
 
-def walkForward(blocks):
-    global locDataUpToDate
+    locationData[4] = targetAngle
 
-    locData = getLocationData()
+def walkForward(blocks):
+    global locationData
     
-    currentAngle = locData[3]
+    updateLocationData()
+    
+    currentAngle = locationData[3]
     currentAngle /= 90
-    currentAngle = int(currentAngle)
+    currentAngle = int(round(currentAngle, 0))
+    print(currentAngle)
 
     # walk towards center of a block
     if(currentAngle == -1): #pos x
-        xPos = locData[0]
+        xPos = locationData[0]
         xPosDecimals = xPos % 1
-        blocks += (0.5-xPosDecimals)
+        blocks += (0.7-xPosDecimals)
+        locationData[0] += blocks
+        print(blocks, locationData[0])
     elif(currentAngle == 0): #pos z
-        zPos = locData[2]
+        zPos = locationData[2]
         zPosDecimals = zPos % 1
-        blocks += (0.5-zPosDecimals)
+        blocks += (0.7-zPosDecimals)
+        locationData[2] += blocks
+        print(blocks, locationData[2])
     elif(currentAngle == 1): #neg x
-        xPos = locData[0]
+        xPos = locationData[0]
         xPosDecimals = xPos % 1
-        blocks -= (0.5-xPosDecimals)
+        blocks -= (0.3-xPosDecimals)
+        locationData[0] -= blocks
+        print(blocks, locationData[0])
     elif(currentAngle == 2): #neg z
-        zPos = locData[2]
+        zPos = locationData[2]
         zPosDecimals = zPos % 1
-        blocks -= (0.5-zPosDecimals)
+        blocks -= (0.3-zPosDecimals)
+        locationData[2] -= blocks
+        print(blocks, locationData[2])
 
-    blocks -= 0.5 #fixes movement offset
-
+    pydirectinput.keyDown("shift")
     pydirectinput.keyDown("w")
     sleep(secondsPerBlock*blocks)
     pydirectinput.keyUp("w")
+    sleep(0.1)
+    pydirectinput.keyUp("shift")
 
-    locDataUpToDate = False
     surroundings.blockDataUpToDate = False
 
 miningTimeDict = {}
@@ -142,5 +128,3 @@ def mine():
         miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
     else:
         miningTimeDict[blockToMine[3]] = miningTime
-
-    print(miningTimeDict)
