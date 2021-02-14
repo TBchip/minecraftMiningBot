@@ -64,7 +64,6 @@ def walkForward(blocks):
     currentAngle = locationData[3]
     currentAngle /= 90
     currentAngle = int(round(currentAngle, 0))
-    print(currentAngle)
 
     # walk towards center of a block
     if(currentAngle == -1): #pos x
@@ -72,25 +71,21 @@ def walkForward(blocks):
         xPosDecimals = xPos % 1
         blocks += (0.7-xPosDecimals)
         locationData[0] += blocks
-        print(blocks, locationData[0])
     elif(currentAngle == 0): #pos z
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         blocks += (0.7-zPosDecimals)
         locationData[2] += blocks
-        print(blocks, locationData[2])
     elif(currentAngle == 1): #neg x
         xPos = locationData[0]
         xPosDecimals = xPos % 1
         blocks -= (0.3-xPosDecimals)
         locationData[0] -= blocks
-        print(blocks, locationData[0])
     elif(currentAngle == 2): #neg z
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         blocks -= (0.3-zPosDecimals)
         locationData[2] -= blocks
-        print(blocks, locationData[2])
 
     pydirectinput.keyDown("shift")
     pydirectinput.keyDown("w")
