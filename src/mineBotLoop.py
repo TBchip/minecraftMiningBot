@@ -17,12 +17,12 @@ def startBotLoop():
     listener = keyboard.Listener(on_release=keyboardListenerOnRelease)
     listener.start()
 
-    infoDelay(5)
+    infoDelay(2)
 
     botLoop()
 
 def infoDelay(openMinecraftDelay):
-    for i in range(openMinecraftDelay*10):
+    for i in range(int(openMinecraftDelay*10)):
         if stopBotLoop:
             return
 
@@ -53,12 +53,6 @@ def botLoop():
     #get initial location data
     player.updateLocationData()
 
-    # wait until locationData gets initialized
-    while player.locationData == []:
-        sleep(0.1)
-
-    player.rotateCamX(-90)
-    print(mineSequences.digTunnel(5))
-    input()
+    player.clearLava()
 
     stopBotLoop = True

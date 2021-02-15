@@ -123,3 +123,10 @@ def mine():
         miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
     else:
         miningTimeDict[blockToMine[3]] = miningTime
+
+def clearLava():
+    rotateCamY(90)
+
+    pydirectinput.press("2")
+    # pydirectinput.keyDown("2")
+    # pydirectinput.keyUp("2")
