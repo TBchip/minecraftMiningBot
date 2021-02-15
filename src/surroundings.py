@@ -19,9 +19,8 @@ def getBlockData():
 
     while True:
         pydirectinput.keyDown("f3")
-        pydirectinput.keyDown("i")
+        pydirectinput.press("i")
         pydirectinput.keyUp("f3")
-        pydirectinput.keyUp("i")
 
         dataString = pyperclip.paste()
 

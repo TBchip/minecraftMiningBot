@@ -16,9 +16,8 @@ def updateLocationData():
     global locationData
 
     pydirectinput.keyDown("f3")
-    pydirectinput.keyDown("c")
+    pydirectinput.press("c")
     pydirectinput.keyUp("f3")
-    pydirectinput.keyUp("c")
 
     dataString = pyperclip.paste()
 
