@@ -143,7 +143,7 @@ def walkForward(blocks):
     pydirectinput.keyUp("shift")
 
     #walk sideways if offset is to large
-    if(sideWaysBlocks > 0.2):
+    if(sideWaysBlocks > 0.19):
         pydirectinput.keyDown("shift")
         pydirectinput.keyDown(sideWaysKey)
         sleep(secondsPerBlock*sideWaysBlocks)
