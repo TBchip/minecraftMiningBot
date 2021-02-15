@@ -57,5 +57,4 @@ def botLoop():
     
     mineSequences.digTunnel(682)
 
-    input()
     stopBotLoop = True
