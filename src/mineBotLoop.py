@@ -55,6 +55,6 @@ def botLoop():
 
     player.rotateCamX(-90)
     
-    mineSequences.digTunnel(20)
+    mineSequences.digTunnel(1000)
 
     stopBotLoop = True
