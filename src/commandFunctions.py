@@ -26,7 +26,7 @@ def loadMiningConfig():
 
 def printMiningConfig():
     for key in player.miningTimeDict:
-        print(f"{key}: {player.miningTimeDict[key]}")
+        print(f"{key} - {player.miningTimeDict[key]}")
     
     if(len(player.miningTimeDict) == 0):
         print("the current mining config is empty")
