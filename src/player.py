@@ -69,22 +69,71 @@ def walkForward(blocks):
         xPos = locationData[0]
         xPosDecimals = xPos % 1
         blocks += (0.7-xPosDecimals)
+
         locationData[0] += blocks
+
+        #sideways movement
+        zPos = locationData[2]
+        zPosDecimals = zPos % 1
+        sideWaysBlocks = (0.5-zPosDecimals)
+        if(sideWaysBlocks >= 0):
+            sideWaysKey = "d"
+        else:
+            sideWaysKey = "a"
+        sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 0): #pos z
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         blocks += (0.7-zPosDecimals)
+
         locationData[2] += blocks
+
+        #sideways movement
+        xPos = locationData[0]
+        xPosDecimals = xPos % 1
+        sideWaysBlocks = (0.5-xPosDecimals)
+        if(sideWaysBlocks >= 0):
+            sideWaysKey = "a"
+        else:
+            sideWaysKey = "d"
+        sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 1): #neg x
         xPos = locationData[0]
         xPosDecimals = xPos % 1
         blocks -= (0.3-xPosDecimals)
+
         locationData[0] -= blocks
+
+        #sideways movement
+        zPos = locationData[2]
+        zPosDecimals = zPos % 1
+        sideWaysBlocks = (0.5-zPosDecimals)
+        if(sideWaysBlocks >= 0):
+            sideWaysKey = "a"
+        else:
+            sideWaysKey = "d"
+        sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 2 or currentAngle == -2): #neg z
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         blocks -= (0.3-zPosDecimals)
+
         locationData[2] -= blocks
+        zPos = locationData[2]
+        zPosDecimals = zPos % 1
+        blocks += (0.7-zPosDecimals)
+
+        locationData[2] += blocks
+
+        #sideways movement
+        xPos = locationData[0]
+        xPosDecimals = xPos % 1
+        sideWaysBlocks = (0.5-xPosDecimals)
+        if(sideWaysBlocks >= 0):
+            sideWaysKey = "d"
+        else:
+            sideWaysKey = "a"
+        sideWaysBlocks = abs(sideWaysBlocks)
 
     pydirectinput.keyDown("shift")
     pydirectinput.keyDown("w")
@@ -93,10 +142,22 @@ def walkForward(blocks):
     sleep(0.1)
     pydirectinput.keyUp("shift")
 
+    #walk sideways if offset is to large
+    if(sideWaysBlocks > 0.2):
+        pydirectinput.keyDown("shift")
+        pydirectinput.keyDown(sideWaysKey)
+        sleep(secondsPerBlock*sideWaysBlocks)
+        pydirectinput.keyUp(sideWaysKey)
+        sleep(0.1)
+        pydirectinput.keyUp("shift")
+
     surroundings.blockDataUpToDate = False
 
 miningTimeDict = {}
 def mine():
+    #select pickaxe
+    pydirectinput.press("1")
+
     blockToMine = surroundings.getBlockData()
     targetedBlock = surroundings.getBlockData()
 
@@ -122,10 +183,3 @@ def mine():
         miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
     else:
         miningTimeDict[blockToMine[3]] = miningTime
-
-def clearLava():
-    rotateCamY(90)
-
-    pydirectinput.press("2")
-    # pydirectinput.keyDown("2")
-    # pydirectinput.keyUp("2")

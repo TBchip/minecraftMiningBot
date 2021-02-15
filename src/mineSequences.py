@@ -1,22 +1,26 @@
 import player
 import surroundings
 
+import mineBotLoop
+
 def digForward():
     wallLevel = surroundings.checkWall()
-    while wallLevel > 0:
+    while wallLevel > 0 and not mineBotLoop.stopBotLoop:
         player.mine()
         wallLevel = surroundings.checkWall()
     
     if surroundings.checkLava():
-        return False
-    else:
-        player.walkForward(1)
-        return True
-        
+        surroundings.clearLava()
+    
+    player.walkForward(1)
+    return True
+
 def digTunnel(length):
     i = 0
     for i in range(length):
-        if not digForward():
-            break
+        if mineBotLoop.stopBotLoop:
+            return i
+
+        digForward()
 
     return i

@@ -53,6 +53,15 @@ def botLoop():
     #get initial location data
     player.updateLocationData()
 
-    player.clearLava()
+    player.rotateCamX(180)
+    # for i in range(3):
+    #     player.rotateCamX(180)
+    #     player.updateLocationData()
+    
+    # mineSequences.digTunnel(15)
+
+    player.walkForward(1)
+    input()
+
 
     stopBotLoop = True

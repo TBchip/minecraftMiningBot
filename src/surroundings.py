@@ -64,6 +64,19 @@ def checkLava():
 
     return dist >= 3
 
+#clear out lava in front of player by placing water
+def clearLava():
+    #if offset is to large then move cam
+    if(abs(90-player.locationData[4]) > 4):
+        player.rotateCamY(90)
+
+    pydirectinput.press("2")
+
+    pydirectinput.click(button="right")
+    sleep(0.18)
+    pydirectinput.click(button="right")
+
+
 #returns 0 for dont mine 1 for mine bottom 2 for mine top
 def checkWall():
     playerY = math.floor(player.locationData[1])
