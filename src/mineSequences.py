@@ -1,6 +1,7 @@
+from time import sleep
+
 import player
 import surroundings
-
 import mineBotLoop
 
 def digForward():

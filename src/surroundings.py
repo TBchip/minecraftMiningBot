@@ -17,17 +17,14 @@ def getBlockData():
 
     pyperclip.copy("None")
 
-    while True:
-        pydirectinput.keyDown("f3")
-        pydirectinput.press("i")
-        pydirectinput.keyUp("f3")
+    pydirectinput.keyDown("f3")
+    pydirectinput.press("i")
+    pydirectinput.keyUp("f3")
 
-        dataString = pyperclip.paste()
+    dataString = pyperclip.paste()
 
-        if dataString.startswith("/summon"):
-            continue
-
-        break
+    if dataString.startswith("/summon"):
+        return "falling"
 
 
     if(dataString == "None"):
@@ -56,8 +53,13 @@ def checkLava():
         player.rotateCamY(55)
 
     blockData = getBlockData()
+    #if not pointing at block
     if(blockData == None):
         return True
+    #wait for falling block to land
+    while getBlockData == "falling":
+        blockData = getBlockData()
+        sleep(0.1)
 
     #get disance to the block the player is pointing at
     dist = abs(locData[0]-blockData[0])+abs(locData[1]-blockData[1])+abs(locData[2]-blockData[2])
@@ -86,8 +88,13 @@ def checkWall():
         player.rotateCamY(55)
 
     blockData = getBlockData()
+    #if not pointing at block
     if(blockData == None):
         return 0
+    #wait for falling block to land
+    while getBlockData == "falling":
+        blockData = getBlockData()
+        sleep(0.1)
     blockY = blockData[1]
 
     return min(max(0, blockY-playerY+1), 2)

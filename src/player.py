@@ -154,32 +154,44 @@ def walkForward(blocks):
     surroundings.blockDataUpToDate = False
 
 miningTimeDict = {}
+staticMiningTimes = {"minecraft:gravel": 1050}
 def mine():
     #select pickaxe
     pydirectinput.press("1")
 
     blockToMine = surroundings.getBlockData()
-    targetedBlock = surroundings.getBlockData()
 
-    #check for existing mining time
-    miningTime = 0
-    if blockToMine[3] in miningTimeDict:
-        miningTime = miningTimeDict[blockToMine[3]]
-
-    #mine block
-    while blockToMine == targetedBlock:
+    if blockToMine[3] in staticMiningTimes:
         pydirectinput.mouseDown(button="left")
-        sleep(miningTime/1000)
+        sleep(staticMiningTimes[blockToMine[3]]/1000)
         pydirectinput.mouseUp(button="left")
         surroundings.blockDataUpToDate = False
-
-        miningTime += 50
-
-        targetedBlock = surroundings.getBlockData()
-    miningTime -= 50 #negate last increase
-
-    #update miningTimeDict
-    if blockToMine[3] in miningTimeDict:
-        miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
     else:
-        miningTimeDict[blockToMine[3]] = miningTime
+        targetedBlock = surroundings.getBlockData()
+
+        #check for existing mining time
+        miningTime = 0
+        if blockToMine[3] in miningTimeDict:
+            miningTime = miningTimeDict[blockToMine[3]]
+
+        #mine block
+        while blockToMine == targetedBlock:
+            pydirectinput.mouseDown(button="left")
+            sleep(miningTime/1000)
+            pydirectinput.mouseUp(button="left")
+            surroundings.blockDataUpToDate = False
+
+            miningTime += 50
+
+            targetedBlock = surroundings.getBlockData()
+            print(targetedBlock)
+            
+        miningTime -= 50 #negate last increase
+
+        #update miningTimeDict
+        if blockToMine[3] in miningTimeDict:
+            miningTimeDict[blockToMine[3]] = max([miningTime, miningTimeDict[blockToMine[3]]])
+        else:
+            miningTimeDict[blockToMine[3]] = miningTime
+
+    return True
