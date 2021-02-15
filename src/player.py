@@ -184,7 +184,6 @@ def mine():
             miningTime += 50
 
             targetedBlock = surroundings.getBlockData()
-            print(targetedBlock)
             
         miningTime -= 50 #negate last increase
 
