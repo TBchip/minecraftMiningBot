@@ -26,25 +26,48 @@ def digTunnel(length):
 
     return i
 
-def stripMinePart():
-    tunnelLength = 5
-
+def stripMinePart(tunnelLength):
+    player.fixAlignment()
     digTunnel(3)
 
+    if mineBotLoop.stopBotLoop:
+        return False
+
     player.rotateCamXRelative(-90)
-    digTunnel(tunnelLength+1)
+    player.fixAlignment()
+    digTunnel(tunnelLength)
+
+    if mineBotLoop.stopBotLoop:
+        return False
 
     player.rotateCamXRelative(90)
-    digTunnel(4)
+    player.fixAlignment()
+    digTunnel(3)
+
+    if mineBotLoop.stopBotLoop:
+        return False
 
     player.rotateCamXRelative(90)
-    digTunnel(tunnelLength*2+2)
+    player.fixAlignment()
+    digTunnel(tunnelLength*2)
+
+    if mineBotLoop.stopBotLoop:
+        return False
 
     player.rotateCamXRelative(90)
-    digTunnel(4)
+    player.fixAlignment()
+    digTunnel(3)
+
+    if mineBotLoop.stopBotLoop:
+        return False
 
     player.rotateCamXRelative(90)
-    digTunnel(tunnelLength+1)
+    player.fixAlignment()
+    digTunnel(tunnelLength)
+
+    if mineBotLoop.stopBotLoop:
+        return False
 
     player.rotateCamXRelative(90)
+    player.fixAlignment()
     digTunnel(3)

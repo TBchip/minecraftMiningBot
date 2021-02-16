@@ -17,7 +17,7 @@ def startBotLoop():
     listener = keyboard.Listener(on_release=keyboardListenerOnRelease)
     listener.start()
 
-    infoDelay(2)
+    infoDelay(5)
 
     botLoop()
 
@@ -60,6 +60,7 @@ def botLoop():
     angle %= 360
     player.rotateCamX(angle)
     
-    mineSequences.stripMinePart()
+    while not stopBotLoop:
+        mineSequences.stripMinePart(10)
 
     stopBotLoop = True

@@ -112,6 +112,9 @@ def walkForward(blocks):
 
     surroundings.blockDataUpToDate = False
 
+def fixAlignment():
+    walkForward(0.01)
+
 def fixSidewaysAlignment():
     global locationData
 
