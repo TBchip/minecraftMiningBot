@@ -22,6 +22,20 @@ def startBotLoop():
     botLoop()
 
 def infoDelay(openMinecraftDelay):
+    print("setup:")
+    print("-"*25)
+    print("slot 1: pickaxe")
+    print("slot 2: water bucket")
+    print("-"*25)
+    print("walk to the position you want to start in")
+    print("-"*25)
+    print()
+    print()
+    print("press R to stop the bot loop")
+    print(f"after pressing enter you will have {openMinecraftDelay} seconds to open the minecraft window")
+    print("-"*25)
+    input("press enter to continue...")
+
     for i in range(int(openMinecraftDelay*10)):
         if stopBotLoop:
             return
