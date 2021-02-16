@@ -42,6 +42,16 @@ def rotateCamX(targetAngle):
     
     locationData[3] = targetAngle
 
+def rotateCamXRelative(angle):
+    global locationData
+    
+    mouseMovement = int(pixelsPerDegreeX*angle)
+    pydirectinput.moveRel(mouseMovement, 0, relative=True)
+
+    surroundings.blockDataUpToDate = False
+    
+    locationData[3] += angle
+
 def rotateCamY(targetAngle):
     global locationData
 
@@ -57,12 +67,15 @@ def rotateCamY(targetAngle):
 
 def walkForward(blocks):
     global locationData
-    
+
+    fixSidewaysAlignment()
+
     updateLocationData()
     
     currentAngle = locationData[3]
     currentAngle /= 90
     currentAngle = int(round(currentAngle, 0))
+    currentAngle = ((currentAngle+2)%4)-2
 
     # walk towards center of a block
     if(currentAngle == -1): #pos x
@@ -71,8 +84,46 @@ def walkForward(blocks):
         blocks += (0.7-xPosDecimals)
 
         locationData[0] += blocks
+    elif(currentAngle == 0): #pos z
+        zPos = locationData[2]
+        zPosDecimals = zPos % 1
+        blocks += (0.7-zPosDecimals)
 
-        #sideways movement
+        locationData[2] += blocks
+    elif(currentAngle == 1): #neg x
+        xPos = locationData[0]
+        xPosDecimals = xPos % 1
+        blocks -= (0.3-xPosDecimals)
+
+        locationData[0] -= blocks
+    elif(currentAngle == 2 or currentAngle == -2): #neg z
+        zPos = locationData[2]
+        zPosDecimals = zPos % 1
+        blocks -= (0.3-zPosDecimals)
+
+        locationData[2] -= blocks
+
+    pydirectinput.keyDown("shift")
+    pydirectinput.keyDown("w")
+    sleep(secondsPerBlock*blocks)
+    pydirectinput.keyUp("w")
+    sleep(0.1)
+    pydirectinput.keyUp("shift")
+
+    surroundings.blockDataUpToDate = False
+
+def fixSidewaysAlignment():
+    global locationData
+
+    updateLocationData()
+
+    currentAngle = locationData[3]
+    currentAngle /= 90
+    currentAngle = int(round(currentAngle, 0))
+    currentAngle = ((currentAngle+2)%4)-2
+
+    # walk towards center of a block
+    if(currentAngle == -1): #pos x
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         sideWaysBlocks = (0.5-zPosDecimals)
@@ -82,13 +133,6 @@ def walkForward(blocks):
             sideWaysKey = "a"
         sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 0): #pos z
-        zPos = locationData[2]
-        zPosDecimals = zPos % 1
-        blocks += (0.7-zPosDecimals)
-
-        locationData[2] += blocks
-
-        #sideways movement
         xPos = locationData[0]
         xPosDecimals = xPos % 1
         sideWaysBlocks = (0.5-xPosDecimals)
@@ -98,13 +142,6 @@ def walkForward(blocks):
             sideWaysKey = "d"
         sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 1): #neg x
-        xPos = locationData[0]
-        xPosDecimals = xPos % 1
-        blocks -= (0.3-xPosDecimals)
-
-        locationData[0] -= blocks
-
-        #sideways movement
         zPos = locationData[2]
         zPosDecimals = zPos % 1
         sideWaysBlocks = (0.5-zPosDecimals)
@@ -114,18 +151,6 @@ def walkForward(blocks):
             sideWaysKey = "d"
         sideWaysBlocks = abs(sideWaysBlocks)
     elif(currentAngle == 2 or currentAngle == -2): #neg z
-        zPos = locationData[2]
-        zPosDecimals = zPos % 1
-        blocks -= (0.3-zPosDecimals)
-
-        locationData[2] -= blocks
-        zPos = locationData[2]
-        zPosDecimals = zPos % 1
-        blocks += (0.7-zPosDecimals)
-
-        locationData[2] += blocks
-
-        #sideways movement
         xPos = locationData[0]
         xPosDecimals = xPos % 1
         sideWaysBlocks = (0.5-xPosDecimals)
@@ -135,14 +160,6 @@ def walkForward(blocks):
             sideWaysKey = "a"
         sideWaysBlocks = abs(sideWaysBlocks)
 
-    pydirectinput.keyDown("shift")
-    pydirectinput.keyDown("w")
-    sleep(secondsPerBlock*blocks)
-    pydirectinput.keyUp("w")
-    sleep(0.1)
-    pydirectinput.keyUp("shift")
-
-    #walk sideways if offset is to large
     if(sideWaysBlocks > 0.19):
         pydirectinput.keyDown("shift")
         pydirectinput.keyDown(sideWaysKey)

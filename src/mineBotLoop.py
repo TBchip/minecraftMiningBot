@@ -53,8 +53,13 @@ def botLoop():
     #get initial location data
     player.updateLocationData()
 
-    player.rotateCamX(-90)
+    #rotate to closest cardinal direction
+    angle = player.locationData[3]
+    angle /= 90
+    angle = int(round(angle, 0))*90
+    angle %= 360
+    player.rotateCamX(angle)
     
-    mineSequences.digTunnel(1000)
+    mineSequences.stripMinePart()
 
     stopBotLoop = True

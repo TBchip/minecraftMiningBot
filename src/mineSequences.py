@@ -25,3 +25,26 @@ def digTunnel(length):
         digForward()
 
     return i
+
+def stripMinePart():
+    tunnelLength = 5
+
+    digTunnel(3)
+
+    player.rotateCamXRelative(-90)
+    digTunnel(tunnelLength+1)
+
+    player.rotateCamXRelative(90)
+    digTunnel(4)
+
+    player.rotateCamXRelative(90)
+    digTunnel(tunnelLength*2+2)
+
+    player.rotateCamXRelative(90)
+    digTunnel(4)
+
+    player.rotateCamXRelative(90)
+    digTunnel(tunnelLength+1)
+
+    player.rotateCamXRelative(90)
+    digTunnel(3)
